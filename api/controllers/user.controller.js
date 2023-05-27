@@ -1,15 +1,12 @@
 const User = require("../models/user");
 const {getAllUsers, getUserById, getOneUser, getUserByIdAndDelete} = require("../dao/user.dao");
-const multer = require("multer");
 
 const createUser = async (req, res) => {
     try {
         const { name, surname, description } = req.body;
         const requiredFields = ['name', 'surname', 'description'];
 
-        console.log(req.body);
         const avatar = req.file.filename;
-        console.log(req.file);
 
         if (name && surname && description) {
 
@@ -50,16 +47,10 @@ const getUsers = async (req, res) => {
 }
 
 const editUser = async (req, res) => {
-    console.log('start')
     try {
         const { id } = req.params;
         const { name, surname, description } = req.body;
         const avatar = req.file;
-        console.log('_______1_______')
-        console.log({ name, surname, description });
-        console.log('_______2_______')
-        console.log(req.file);
-        console.log('_______3_______')
         const user = await getUserById(id);
 
         if (!user) {

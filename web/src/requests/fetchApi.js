@@ -1,6 +1,6 @@
-export const fetchApi = async (endpoint, method = 'GET', body = null) => {
+export const fetchApi = async (endpoint, method = 'GET', body = null, params = {}) => {
 
-    const url = `http://localhost:8080/api${endpoint}`
+    let url = `http://localhost:8080/api${endpoint}`
 
     const options = {
         method,
@@ -22,6 +22,13 @@ export const fetchApi = async (endpoint, method = 'GET', body = null) => {
                 'Content-Type': 'application/json',
             };
         }
+    }
+
+    if (Object.keys(params).length > 0) {
+        const queryString = Object.entries(params)
+            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+            .join('&');
+        url += `?${queryString}`;
     }
 
     try {

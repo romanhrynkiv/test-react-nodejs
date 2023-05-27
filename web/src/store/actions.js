@@ -7,8 +7,9 @@ export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
 export const CREATE_USER = 'CREATE_USER';
 export const CREATE_USER_SUCCESS = 'CREATE_USER_SUCCESS';
 
-export const fetchUsers = () => ({
+export const fetchUsers = ({offset, limit}) => ({
     type: FETCH_USERS,
+    payload: {offset, limit}
 });
 
 export const fetchUsersSuccess = (users) => ({

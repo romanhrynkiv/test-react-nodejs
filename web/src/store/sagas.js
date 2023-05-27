@@ -9,12 +9,13 @@ import {
 } from './actions';
 import {fetchApi} from "../requests/fetchApi";
 
-function* fetchUsersSaga() {
+function* fetchUsersSaga(action) {
     try {
-        const data = yield call(fetchApi, '/users');
+        const { offset, limit } = action.payload;
+        const data = yield call(fetchApi, '/users', 'GET', null, { offset, limit });
         yield put(fetchUsersSuccess(data.data.users));
     } catch (error) {
-        // Handle error
+        console.log(error);
     }
 }
 
@@ -24,7 +25,7 @@ function* deleteUserSaga(action) {
         yield call(fetchApi, `/user/${id}`, 'DELETE');
         yield put(deleteUserSuccess(id));
     } catch (error) {
-        // Handle error
+        console.log(error);
     }
 }
 
@@ -34,18 +35,17 @@ function* updateUserSaga(action) {
         const response = yield call(fetchApi, `/user/${user._id}`, 'PUT', user);
         yield put(editUserSuccess(response))
     } catch (error) {
-        // Handle error
+        console.log(error);
     }
 }
 
 function* createUserSaga(action) {
-    console.log('check')
     const { payload: user } = action;
     try {
         const response = yield call(fetchApi, '/users', 'POST', user);
         yield put(createUserSuccess(response));
     } catch (error) {
-        // Handle error
+        console.log(error);
     }
 }
 

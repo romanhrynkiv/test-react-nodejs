@@ -1,7 +1,26 @@
 .user-card {
     width: 300px;
+    position: relative;
 }
 
 .card-shadow {
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 3px 3px 6px #b0aeae !important;
+}
+
+span {
+    color: red;
+    font-weight: 500;
+}
+
+.edit-block {
+    position: absolute;
+}
+
+.display-buttons-user {
+    justify-content: center;
+}
+
+.update-user-button {
+    display: block !important;
+    margin: 10px auto !important;
 }
