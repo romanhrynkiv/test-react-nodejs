@@ -1,0 +1,17 @@
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.item-center {
+    display: flex;
+    justify-content: center;
+}
+
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    margin: 50px auto;
+    width: 400px;
+    gap: 20px;
+}

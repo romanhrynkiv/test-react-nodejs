@@ -1,7 +1,12 @@
 const User = require("../models/user");
 
-const getAllUsers = async () => {
-    return User.find();
+const getAllUsers = async (offset, limit) => {
+    const usersQuery = User.find().skip(offset).limit(limit);
+    const totalUsersQuery = User.countDocuments();
+
+    const [users, totalUsers] = await Promise.all([usersQuery, totalUsersQuery]);
+
+    return { users, totalUsers };
 }
 
 const getOneUser = async (name, surname) => {

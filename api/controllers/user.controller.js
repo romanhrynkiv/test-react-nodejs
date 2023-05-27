@@ -1,10 +1,15 @@
 const User = require("../models/user");
 const {getAllUsers, getUserById, getOneUser, getUserByIdAndDelete} = require("../dao/user.dao");
+const multer = require("multer");
 
 const createUser = async (req, res) => {
     try {
-        const { name, surname, description, avatar } = req.body;
+        const { name, surname, description } = req.body;
         const requiredFields = ['name', 'surname', 'description'];
+
+        console.log(req.body);
+        const avatar = req.file.filename;
+        console.log(req.file);
 
         if (name && surname && description) {
 
@@ -34,7 +39,9 @@ const createUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
-        const users = getAllUsers();
+        const offset = req.query.offset ? parseInt(req.query.offset) : 0;
+        const limit = 5;
+        const users = await getAllUsers(offset, limit);
         res.status(200).json({data: users});
     } catch (error) {
         console.error(error);
@@ -43,15 +50,25 @@ const getUsers = async (req, res) => {
 }
 
 const editUser = async (req, res) => {
+    console.log('start')
     try {
         const { id } = req.params;
-        const { name, surname, description, avatar } = req.body;
-
+        const { name, surname, description } = req.body;
+        const avatar = req.file;
+        console.log('_______1_______')
+        console.log({ name, surname, description });
+        console.log('_______2_______')
+        console.log(req.file);
+        console.log('_______3_______')
         const user = await getUserById(id);
 
         if (!user) {
             return res.status(404).json({ message: 'User is not founded' });
         }
+
+        const pathAvatar = avatar ? avatar.filename : await getUserById(id).then(data => {
+            return data.avatar;
+        })
 
         await getOneUser(name, surname)
             .then(async (result) => {
@@ -59,7 +76,7 @@ const editUser = async (req, res) => {
                     user.name = name;
                     user.surname = surname;
                     user.description = description;
-                    user.avatar = avatar;
+                    user.avatar = pathAvatar;
 
                     const updatedUser = await user.save();
 
